@@ -1,0 +1,22 @@
+@use "../../variables" as *;
+
+.login-wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $bg-color-primary;
+    flex-flow: column;
+}
+.title {
+    color: $title-text-primary;
+    font-size: 4rem;
+}
+.color {
+    color: $title-text-primary;
+}
+.text-box {
+    background-color: $text-box-field;
+    color: $text-box-text;
+}

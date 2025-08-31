@@ -1,10 +1,12 @@
 import React from "react";
+import "./login.scss";
 
 function Login() {
 
     return(
-        <div>
-            <h1>Login Page</h1>
+        <div className="login-wrapper">
+            <h1 className="title">Welcome Back!</h1>
+            <h3 className="color">Please Enter Your Username and Password</h3>
         </div>
     );
 }

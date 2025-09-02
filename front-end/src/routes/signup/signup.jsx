@@ -1,10 +1,14 @@
 import React from "react";
+import "./signup.scss";
 
 function SignUp() {
 
     return (
-        <div>
-            <h1>Sign Up Page</h1>
+        <div className="signup-wrapper">
+            <h1 className="title">Sign Up Page</h1>
+
+            {/*Delete when done. Links for each page*/}
+            <a href="/">Login Page</a>
         </div>
     );
 }

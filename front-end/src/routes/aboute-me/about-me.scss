@@ -1,6 +1,6 @@
 @use "../../variables" as *;
 
-.login-wrapper {
+.about-wrapper {
     height: 100vh;
     width: 100%;
     display: flex;
@@ -19,8 +19,4 @@
 .text-box {
     background-color: $text-box-field;
     color: $text-box-text;
-}
-.button {
-    background-color: $button;
-    color: $button-text;
 }

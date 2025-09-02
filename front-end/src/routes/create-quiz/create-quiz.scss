@@ -1,6 +1,6 @@
 @use "../../variables" as *;
 
-.login-wrapper {
+.createquiz-wrapper {
     height: 100vh;
     width: 100%;
     display: flex;
@@ -21,6 +21,6 @@
     color: $text-box-text;
 }
 .button {
-    background-color: $button;
-    color: $button-text;
+    background-color: $button-secondary;
+    color: $button-text-secondary;
 }

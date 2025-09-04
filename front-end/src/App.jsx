@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import './App.css'
 import AboutMe from "./routes/aboute-me/about-me";
 import CreateQuiz from "./routes/create-quiz/create-quiz";
 import Home from "./routes/home/home";

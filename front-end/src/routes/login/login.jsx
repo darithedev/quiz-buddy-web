@@ -9,11 +9,11 @@ function Login() {
             <Card className="login-card">
                 <Card.Body>
                     <div className="text-center mb-4 color-sec">
-                        <Card.Title className="mb-4"as="h1">QuizBuddy</Card.Title>
+                        <Card.Title className="mb-4" as="h1">QuizBuddy</Card.Title>
                         <Card.Title className="mb-3" as="h2">Welcome Back!</Card.Title>
                         <Card.Subtitle className="mb-2">Please Login by Entering Your Username and Password</Card.Subtitle>
                     </div>
-                    <Form>
+                    <Form className="d-flex flex-column align-items-center">
                         <Form.Group className="mb-3" controlId="formUser">
                             <Form.Label className="color-sec">User Name </Form.Label>
                             <Form.Control className="text-box" required type="user" placeholder=" User Name" />
@@ -22,13 +22,17 @@ function Login() {
                             <Form.Label className="color-sec">Password </Form.Label>
                             <Form.Control className="text-box" required type="password" placeholder=" Password" />
                         </Form.Group>
+                    </Form>
+                    <div className="mt-3 button-flex-right">
                         <Button href="/home" type="submit" className="w-100 mb-5 button-sec">
                             <strong>Login</strong>
                         </Button>
-                    </Form>
-                    <Button variant="link" href="/signup" className="button-link">
-                        Create Account
-                    </Button>
+                    </div>
+                    <div className="text-center">
+                        <Button variant="link" href="/signup" className="button-link">
+                            Create Account
+                        </Button>
+                    </div>
                 </Card.Body>
             </Card>
         </div>

@@ -10,7 +10,7 @@ function Home() {
             {/*Delete when done. Links for each page*/}
             <a href="/create-quiz">Create Quiz Page</a>
             <a href="/about">About Page</a>
-            <a href="/">Login Page</a> {/*Logout*/}
+            <a href="/">Logout</a> {/*Logout*/}
             
             <a href="/quiz">Quiz Page</a>
         </div>

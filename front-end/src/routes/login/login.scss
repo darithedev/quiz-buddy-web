@@ -29,11 +29,17 @@
     color: $text-box-text;
     height: 50px;
 }
+.button-flex-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5.5vh;
+}
 .button-sec {
     background-color: $button-secondary;
     color: $button-text-secondary;
     border: none;
     height: 40px;
+    max-width: 90px;
 }
 .button-sec:hover {
     background-color: $text-box-field;

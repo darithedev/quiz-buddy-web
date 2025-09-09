@@ -4,9 +4,19 @@
     height: 100vh;
     width: 100%;
     display: flex;
+    background-color: $bg-color-primary;
+}
+.header {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: row;
+    margin-left: 7%;
+}
+.home-content {
+    flex: 0.05;
+    display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $bg-color-primary;
     flex-flow: column;
 }
 .title {
@@ -20,7 +30,14 @@
     background-color: $text-box-field;
     color: $text-box-text;
 }
-.button {
+.button-primary {
     background-color: $button;
     color: $button-text;
+    border: none;
+    height: 40px;
+    width: 70px;
+}
+.button-primary:hover {
+    background-color: $text-box-field;
+    color: $button-text-secondary;
 }

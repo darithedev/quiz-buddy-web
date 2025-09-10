@@ -1,23 +1,24 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Navbar, Nav, Container } from "react-bootstrap";
 import "./home.scss";
 
 function Home() {
     
     return (
         <div className="home-wrapper">
-            <div className="header">
-                <h1 className="m-4 ms-5 title">QuizBuddy</h1>
-
-                <div className="d-flex flex-column m-3">
-                    {/*Delete when done. Links for each page*/}
-                    <a href="/create-quiz">Create Quiz Page</a>
-                    <a href="/about">About Page</a>
-                    <a href="/">Logout</a> {/*Logout*/}
-                
-                    <a href="/quiz">Quiz Page</a>
-                </div>
-            </div>
+            <Navbar className="d-flex flex-column m-3">
+                <Container>
+                    <Navbar.Brand  href="home" className="m-4 ms-5 title-link">QuizBuddy</Navbar.Brand>
+                    <Navbar.Collapse className="home-nav-bar">
+                        <Nav className="m-4 ms-5">
+                            <Nav.Link href="/create-quiz" className="color-secondary">Create Quiz Page</Nav.Link>
+                            <Nav.Link href="/about" className="color-secondary">About Page</Nav.Link>
+                            <Nav.Link href="/quiz" className="color-secondary">Quiz Page</Nav.Link>
+                            <Nav.Link href="/" className="color-secondary">Logout</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
             <div className="home-content">
                 <div className="mt-4">
                     <Button href="/create-quiz" type="submit" className="button-primary">

@@ -13,21 +13,21 @@ function Login() {
                         <Card.Title className="mb-3" as="h2">Welcome Back!</Card.Title>
                         <Card.Subtitle className="mb-2">Please Login by Entering Your Username and Password</Card.Subtitle>
                     </div>
-                    <Form className="d-flex flex-column align-items-center">
+                    <Form>
                         <div>
                             <Form.Group className="mb-3" controlId="formUser">
-                            <Form.Label className="color-sec">User Name </Form.Label>
-                            <Form.Control className="text-box" required type="user" placeholder=" User Name" />
-                        </Form.Group>
-                        <Form.Group className="mb-4" controlId="formPassword">
-                            <Form.Label className="color-sec">Password </Form.Label>
-                            <Form.Control className="text-box" required type="password" placeholder=" Password" />
-                        </Form.Group>
-                        <Form.Group className="mt-2 mb-5 button-wrapper">
-                            <Button href="/home" type="submit" className="w-100 button-sec">
-                                <strong>Login</strong>
-                            </Button>
-                        </Form.Group>
+                                <Form.Label className="color-sec">User Name </Form.Label>
+                                <Form.Control className="text-box" required type="user" placeholder=" User Name" />
+                            </Form.Group>
+                            <Form.Group className="mb-4" controlId="formPassword">
+                                <Form.Label className="color-sec">Password </Form.Label>
+                                <Form.Control className="text-box" required type="password" placeholder=" Password" />
+                            </Form.Group>
+                            <Form.Group className="mb-5 button-wrapper">
+                                <Button href="/home" type="submit" className="mt-2 w-100 button-sec">
+                                    <strong>Login</strong>
+                                </Button>
+                            </Form.Group>
                         </div>
                     </Form>
                     <div className="d-flex justify-content-center gap-1">

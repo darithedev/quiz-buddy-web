@@ -5,11 +5,12 @@ import "./home.scss";
 function Home() {
     
     return (
-        <div className="home-wrapper">
+        <div expand="md" className="home-wrapper">
             <Navbar className="d-flex flex-column m-3">
                 <Container>
                     <Navbar.Brand  href="home" className="m-4 ms-5 title-link">QuizBuddy</Navbar.Brand>
-                    <Navbar.Collapse className="home-nav-bar">
+                    <Navbar.Toggle aria-controls="hamburger-menu" />
+                    <Navbar.Collapse id="hamburger-menu" className="home-nav-bar">
                         <Nav className="m-4 ms-5">
                             <Nav.Link href="/create-quiz" className="color-secondary">Create Quiz Page</Nav.Link>
                             <Nav.Link href="/about" className="color-secondary">About Page</Nav.Link>

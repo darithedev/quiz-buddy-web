@@ -9,6 +9,24 @@
     background-color: $bg-color-primary;
     flex-flow: column;
 }
+.quiz-content {
+    width: 100%;
+    max-width: 300px;
+    padding: 2rem;
+
+    @media (min-width: map-get($grid-breakpoints, sm)) {
+        padding: 2rem;
+    }
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
+        max-width: 400px;
+    }
+
+    @media (min-width: map-get($grid-breakpoints, lg)) {
+        max-width: 450px;
+        padding: 3rem;
+    }
+}
 .title {
     color: $title-text-primary;
     font-size: 4rem;

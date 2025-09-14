@@ -1,5 +1,5 @@
 @use"./_variables" as *;
-@import "bootstrap/scss/bootstrap";
+@use "bootstrap/scss/bootstrap" as *;
 
 input,
 select {

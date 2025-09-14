@@ -2,12 +2,12 @@
 
 .signup-wrapper {
     height: 100vh;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $bg-color-primary;
     flex-flow: column;
+    background-color: $bg-color-primary;
+    
 }
 .signup-card {
     width: 100%;
@@ -31,10 +31,6 @@
         padding: 3rem;
     }
 }
-.row {
-    display: flex;
-    flex-direction: row;
-}
 .title {
     color: $title-text-primary;
     font-size: 4rem;
@@ -45,18 +41,16 @@
 .text-box {
     background-color: $text-box-field;
     color: $text-box-text;
-    max-width: 200px;
+    height: 50px;
 }
-.button-flex-center {
-    display: flex;
-    justify-content: center;
+.button-wrap {
+    min-width: 255px;
 }
 .button {
-    background-color: $button-secondary;
-    color: $button-text-secondary;
     border: none;
     height: 40px;
-    max-width: 90px;
+    background-color: $button-secondary;
+    color: $button-text-secondary;
 }
 .button:hover {
     background-color: $text-box-field;

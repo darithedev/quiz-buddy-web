@@ -10,7 +10,7 @@
 }
 .login-card {
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
     padding: 2rem;
     box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
     border: none;
@@ -42,17 +42,14 @@
     color: $text-box-text;
     height: 50px;
 }
-.button-flex-right {
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 5.5vh;
+.button-wrapper {
+    min-width: 320px;
 }
 .button-sec {
-    background-color: $button-secondary;
-    color: $button-text-secondary;
     border: none;
     height: 40px;
-    max-width: 90px;
+    background-color: $button-secondary;
+    color: $button-text-secondary;
 }
 .button-sec:hover {
     background-color: $text-box-field;

@@ -17,7 +17,7 @@ function Login() {
                         <div>
                             <Form.Group className="mb-3" controlId="formUser">
                                 <Form.Label className="color-sec">User Name </Form.Label>
-                                <Form.Control className="text-box" required type="user" placeholder=" User Name" />
+                                <Form.Control className="text-box" required type="text" placeholder=" User Name" />
                             </Form.Group>
                             <Form.Group className="mb-4" controlId="formPassword">
                                 <Form.Label className="color-sec">Password </Form.Label>

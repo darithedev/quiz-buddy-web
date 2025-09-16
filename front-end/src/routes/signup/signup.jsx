@@ -30,7 +30,7 @@ function SignUp() {
                                 <Form.Control className="text-box" required type="password" placeholder=" Password321" />
                             </Form.Group>
                             <Form.Group className="mb-5 button-wrap">
-                                <Button href="/login" type="submit" className="mt-3 w-100 button">
+                                <Button href="/" type="submit" className="mt-3 w-100 button">
                                     <strong>Create</strong>
                                 </Button>
                             </Form.Group>

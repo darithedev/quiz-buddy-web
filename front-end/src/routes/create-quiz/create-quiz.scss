@@ -59,6 +59,8 @@
     color: $text-box-text;
 }
 .button-sm {
+    border: none;
+    height: 40px;
     max-width: 100px;
     background-color: $button-secondary;
     color: $button-text-secondary;

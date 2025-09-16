@@ -38,7 +38,7 @@ function CreateQuiz() {
                             <Form.Control className="text-box-lg" />
                         </Form.Group>
                         <Form.Group className="button-wrapper text-end">
-                            <Button href="/home" type="submit" className="mt-2 w-100 button">
+                            <Button href="/home" type="submit" className="mt-2 w-100 button-sm">
                                 <strong>Create</strong>
                             </Button>
                         </Form.Group>

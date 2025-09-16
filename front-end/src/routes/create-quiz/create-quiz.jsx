@@ -6,7 +6,7 @@ function CreateQuiz() {
 
     return (
         <div className="create-wrapper">
-            <Navbar expand="md" className="d-flex flex-column m-3" fixed="top">
+            <Navbar expand="lg" className="d-flex flex-column m-3" fixed="top">
                 <Container>
                     <Navbar.Brand href="home" className="m-4 ms-5 title-link">Create your Quiz</Navbar.Brand>
                     <Navbar.Toggle aria-controls="hamburger-menu" />

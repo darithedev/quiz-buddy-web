@@ -7,15 +7,15 @@ function Home() {
     
     return (
         <div className="home-wrapper">
-            <Navbar expand="md" className="d-flex flex-column m-3">
+            <Navbar expand="md" className="d-flex flex-column m-3" fixed="top">
                 <Container>
                     <Navbar.Brand href="home" className="m-4 ms-5 title-link">QuizBuddy</Navbar.Brand>
                     <Navbar.Toggle aria-controls="hamburger-menu" />
                     <Navbar.Collapse id="hamburger-menu" className="home-nav-bar">
                         <Nav className="m-4 ms-5">
                             <Nav.Link href="/create-quiz" className="color-secondary">Create a Quiz</Nav.Link>
+                            <Nav.Link href="/quiz" className="color-secondary">Take a Quiz</Nav.Link>
                             <Nav.Link href="/about" className="color-secondary">About</Nav.Link>
-                            <Nav.Link href="/quiz" className="color-secondary">Take Quiz</Nav.Link>
                             <Nav.Link href="/" className="color-secondary">Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

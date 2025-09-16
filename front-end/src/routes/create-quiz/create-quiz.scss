@@ -1,6 +1,6 @@
 @use "../../variables" as *;
 
-.createquiz-wrapper {
+.create-wrapper {
     height: 100vh;
     width: 100%;
     display: flex;
@@ -9,10 +9,13 @@
     background-color: $bg-color-primary;
     flex-flow: column;
 }
-.create-content {
+.create-card {
     width: 100%;
-    max-width: 300px;
     padding: 2rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 0.75rem;
+    background-color: $bg-color-secondary;
 
     @media (min-width: map-get($grid-breakpoints, sm)) {
         padding: 2rem;
@@ -23,22 +26,43 @@
     }
 
     @media (min-width: map-get($grid-breakpoints, lg)) {
-        max-width: 450px;
+        max-width: 850px;
         padding: 3rem;
     }
+}
+.create-nav-bar {
+    width: 100%;
+    max-width: 380px;
+    //padding-right: 1.75rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 0.75rem;
+    background-color: $bg-color-secondary;
+}
+.navbar-toggler {
+    border: none;
 }
 .title {
     color: $title-text-primary;
     font-size: 4rem;
 }
 .color {
-    color: $title-text-primary;
+    color: $title-text-secondary;
 }
 .text-box {
     background-color: $text-box-field;
     color: $text-box-text;
 }
+.text-box-lg {
+    height: 300px;
+    background-color: $text-box-field;
+    color: $text-box-text;
+}
 .button {
+    max-width: 100px;
     background-color: $button-secondary;
     color: $button-text-secondary;
+}
+.mt-8 {
+    margin-top: 8rem;
 }

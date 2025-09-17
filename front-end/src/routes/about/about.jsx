@@ -13,7 +13,7 @@ function AboutMe () {
                     <Navbar.Collapse id="hamburger-menu" className="about-nav-bar">
                         <Nav className="m-4 ms-5">
                             <Nav.Link href="/home" className="color-secondary">Home</Nav.Link>
-                            <Nav.Link href="/about" className="color-secondary">Create a Quiz</Nav.Link>
+                            <Nav.Link href="/create-quiz" className="color-secondary">Create a Quiz</Nav.Link>
                             <Nav.Link href="/quiz" className="color-secondary">Take a Quiz</Nav.Link>
                             <Nav.Link href="/" className="color-secondary">Logout</Nav.Link>
                         </Nav>

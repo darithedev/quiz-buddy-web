@@ -11,8 +11,12 @@
 }
 .about-content {
     width: 100%;
-    max-width: 300px;
     padding: 2rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 0.75rem;
+    background-color: $bg-color-secondary;
+
 
     @media (min-width: map-get($grid-breakpoints, sm)) {
         padding: 2rem;
@@ -23,9 +27,21 @@
     }
 
     @media (min-width: map-get($grid-breakpoints, lg)) {
-        max-width: 450px;
+        max-width: 850px;
         padding: 3rem;
     }
+}
+.about-nav-bar {
+    width: 100%;
+    max-width: 450px;
+    //padding-right: 1.75rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 0.75rem;
+    background-color: $bg-color-secondary;
+}
+.navbar-toggler {
+    border: none;
 }
 .title {
     color: $title-text-primary;

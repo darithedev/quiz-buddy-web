@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Navbar, Nav, Container } from "react-bootstrap";
 import "./home.scss";
 
 
 function Home() {
+
+    const [quizzes, showQuizes] = useState([]); // For testing: {title: "American Government"}
+
+    {/*Will use useEffect for state management commented for now*/}
+    {/*useEffect(() => { 
+        showQuizes();
+    });*/}
     
     return (
         <div className="home-wrapper">
@@ -22,11 +29,20 @@ function Home() {
                 </Container>
             </Navbar>
             <div className="home-content">
-                <div className="mt-4">
-                    <Button href="/create-quiz" type="submit" className="button-primary">
-                        <strong>+</strong>
-                    </Button>
-                </div>
+                {quizzes.length == 0 ? (
+                    <div className="mt-4">
+                        <Button href="/create-quiz" type="submit" className="button-primary">
+                            <strong>+</strong>
+                        </Button>
+                    </div>
+                ) : (
+                    <div>
+                        <h3 className="mb-5 title-md">Your Quizzes</h3>
+                        <Button href="/quiz" type="submit" className="button-primary-md">
+                            <strong>American Government</strong>
+                        </Button>
+                    </div>
+                )}
             </div>
         </div>
     );

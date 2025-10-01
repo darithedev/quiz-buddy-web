@@ -1,16 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { Button, Navbar, Nav, Container } from "react-bootstrap";
+import { Button, Navbar, Nav, Container, Modal } from "react-bootstrap";
 import "./home.scss";
 
 
 function Home() {
 
-    const [quizzes, showQuizes] = useState([]); // For testing: {title: "American Government"}
+    const [quizzes, showQuizes] = useState([]);
+    //const [deleteModal, setDeleteModal] = useState(false);
+    //const [quizDelete, setQuizDelete] = useState("");
 
-    {/*Will use useEffect for state management commented for now*/}
-    {/*useEffect(() => { 
-        showQuizes();
-    });*/}
+    useEffect(() => { 
+        const local = localStorage.getItem("quizzes");
+        const q = local ? JSON.parse(local) : [];
+        showQuizes(q);
+    }, []);
+
+    {/* Future feat for updating and deleting quizzes */}
+    {/*const deleteWarning = (quiz) => {
+        setQuizDelete(quiz);
+        setDeleteModal(true);
+    };
+
+    const deleteThisQuiz = () => {
+        if (quizDelete) {
+            const local = localStorage.getItem("quizzes");
+            const q = local ? JSON.parse(local) : [];
+            const updated = q.filter(qu => qu.id !== quizDelete.id);
+            localStorage.setItem("quizzes", JSON.stringify(updated));
+            showQuizes(updated);
+        }
+        setDeleteModal(false);
+        setQuizDelete("");
+    }
+
+    const updateQuiz = (quiz) => {
+        localStorage.setItem("updating", JSON.stringify(quiz));
+        window.location.href = "/crete-quiz";
+    }*/}
     
     return (
         <div className="home-wrapper">
@@ -38,9 +64,15 @@ function Home() {
                 ) : (
                     <div>
                         <h3 className="mb-5 title-md">Your Quizzes</h3>
-                        <Button href="/quiz" type="submit" className="button-primary-md">
-                            <strong>American Government</strong>
-                        </Button>
+                        {quizzes.map(q => (
+                            <div className="mb-3" key={q.id}>
+                                <div className="quiz-content">
+                                    <Button href={`/quiz?id=${q.id}`} type="button" className="button-primary-md quiz-title-button">
+                                        <strong>{q.title}</strong>
+                                    </Button>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>

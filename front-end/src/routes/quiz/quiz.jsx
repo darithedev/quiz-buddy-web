@@ -1,10 +1,65 @@
-import React, { useState } from "react";
-import { Button, Navbar, Nav, Container, Card, Form } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Navbar, Nav, Container, Card, Form, Modal, ModalFooter } from "react-bootstrap";
 import "./quiz.scss";
 
 function Quiz({quizName, question}) {
 
-    const [selected, setSelected] = useState(false);
+    const [selected, setSelected] = useState(null);
+    const [current, setCurrent] = useState(0);
+    const [quiz, setQuiz] = useState(null);
+    const [score, setScore] = useState(0);
+    const [final, setFinal] = useState(0);
+    const [modal, showModal] = useState(false);
+
+    useEffect(() => {
+        const url = window.location.href;
+        const skip = url.indexOf('id=') + 3;
+        const quizID = url.substring(skip);
+        const local = localStorage.getItem("quizzes");
+
+        let quizzes = [];
+        if (local) {
+            quizzes = JSON.parse(local);
+        }
+
+        let thisQuiz = null;
+        for (let i = 0; i < quizzes.length; i++) {
+            if (quizzes[i].id === quizID) {
+                thisQuiz = quizzes[i];
+                break;
+            }
+        }
+        setQuiz(thisQuiz);
+    }, []);
+
+    let thisThis = null;
+    if (quiz && quiz.questions && quiz.questions[current]) {
+        thisThis = quiz.questions[current];
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!quiz || selected === null) {
+            return;
+        }
+
+        if (selected == 0) { // set to default
+            setScore(score + 1);
+        }
+
+        if (current + 1 < quiz.questions.length) {
+            setCurrent(current + 1);
+            setSelected(null);
+        } else {
+            let total = score;
+            if (selected === 0) { // set to default
+                total = score + 1;
+            }
+            setFinal(total);
+            showModal(true);
+        }
+    }
 
     return (
         <div className="quiz-wrapper">
@@ -28,39 +83,40 @@ function Quiz({quizName, question}) {
                 <h2>Quiz - {quizName}</h2>
             </div>*/}
             <Card className="mt-8 quiz-card">
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <div>
                         <Form.Group className="mb-3" controlId="questions">
-                            <Card.Title as="h2" className="color">{question}1. Who is the 46th govenor of Florida?</Card.Title>
+                            <Card.Title as="h2" className="color">{!quiz ? "No Quizzes found" : !thisThis ? "Loading..." : `${current + 1}. ${thisThis.question}`}</Card.Title>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="a">
-                            <Form.Control className="text-box" />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="b">
-                            <Form.Control className="text-box" />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="c">
-                            <Form.Control className="text-box" />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="d">
-                            <Form.Control className="text-box" />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="e">
-                            <Form.Control 
-                                className="text-box"  
-                                placeholder="e. I don't know"
-                                disabled
-                                onClick={() => setSelected(!selected)}/>
-                        </Form.Group>
+                        {quiz && thisThis && thisThis.multipleChoice && thisThis.multipleChoice.map((chosen, letter) => (
+                            <Form.Group className="mb-3" controlId={`chosen-${letter}`} key={letter}>
+                                <Form.Control className="text-box" value={chosen} onClick={() => setSelected(letter)} readOnly/>
+                            </Form.Group>
+                        ))}
 
                         <Form.Group className="button-wrapper text-end">
-                            <Button href="" type="submit" className="mt-2 w-100 button-sm">
-                                <strong>Next</strong>
-                            </Button>
+                            {quiz && (
+                                <Button href="" type="submit" className="mt-2 w-100 button-sm" disabled={selected === null}>
+                                    <strong>{current + 1 < quiz.questions.length ? "Next" : "Finish"}</strong>
+                                </Button>
+                            )}
                         </Form.Group>
                     </div>
                 </Form>
             </Card>
+
+            <Modal show={modal} onHide={() => showModal(false)} centered>
+                <Modal.Title>You Completed Your Quiz!</Modal.Title>
+                <Modal.Body>
+                    <div>
+                        <h3>Your Score: {final} / {quiz?.questions.length}</h3>
+                        {/*<p className="mt-3"></p>*/}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => { showModal(false); window.location.href = "/home";}}> Home </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

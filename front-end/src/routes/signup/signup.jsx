@@ -21,7 +21,7 @@ function SignUp() {
         event.preventDefault();
 
         try {
-            const URL = import.meta.env.API_URL
+            const URL = import.meta.env.VITE_API_URL
             const api = await fetch(`${URL}/api/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -86,7 +86,7 @@ function SignUp() {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-5 button-wrap">
-                                <Button href="/" type="submit" className="mt-3 w-100 button">
+                                <Button type="submit" className="mt-3 w-100 button">
                                     <strong>Create</strong>
                                 </Button>
                             </Form.Group>

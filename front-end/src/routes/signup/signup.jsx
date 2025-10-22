@@ -28,6 +28,15 @@ function SignUp() {
                 body: JSON.stringify(userData)
             });
 
+            if (api.ok) {
+                alert('User was created!')
+                window.location.href = '/';
+            } else {
+                const data = await api.json();
+                console.log('Error: ', data)
+                alert(data.error);
+            }
+
         } catch (error) {
             alert('ERROR! Account was not created. Please try again.')
         }

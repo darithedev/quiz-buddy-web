@@ -6,10 +6,14 @@ export async function POST(request) {
         const { fullName, email, userName, password } = await request.json()
 
         const { data, error } = await supabase.auth.signUp({
-            fullName: fullName,
             email: email,
-            userName: userName, 
-            password: password
+            password: password,
+            options: {
+                data: {
+                    fullName: fullName,
+                    userName: userName, 
+                }
+            }
         })
 
         if (error) {
@@ -23,13 +27,12 @@ export async function POST(request) {
                 full_name: fullName,
                 email: email,
                 username: userName
-                
             });
         
-        // May not need this as the status 500 is used for errors
-        //if (usersError) {
-        //    console.error('Error creating user in Supabase Database. Error: ', usersError);
-        //}
+        if (usersError) {
+            console.error('Error creating user in Supabase Database. Error: ', usersError);
+            return NextResponse.json({error: 'User not created!'}, {status: 500})
+        }
 
         return NextResponse.json ({
             message: 'User was created!',

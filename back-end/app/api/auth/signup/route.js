@@ -5,7 +5,7 @@ export async function OPTIONS() {
     return new Response(null, {
         status: 200,
         headers: {
-            'Access-Control-Allow-Origin': 'https://quiz-buddy-web.vercel.app/',
+            'Access-Control-Allow-Origin': 'https://quiz-buddy-web.vercel.app',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization'
         },
@@ -45,14 +45,18 @@ export async function POST(request) {
             return NextResponse.json({error: 'User not created!'}, {status: 500})
         }
 
-        return NextResponse.json ({
+        const response = NextResponse.json ({
             message: 'User was created!',
             user: data.user
-        }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            }
-        })
+        }, 
+            {status: 200}
+        )
+        response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+        return response;
+
     } catch (error) {
         return NextResponse.json({error: 'ERROR, User not created!'}, {status: 500})
     }

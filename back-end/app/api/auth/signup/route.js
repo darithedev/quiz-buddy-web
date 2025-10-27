@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../../supabase";
 
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 200,
+        headers: {
+            'Acecss-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        },
+    })
+}
+
 export async function POST(request) {
     try {
         const { fullName, email, userName, password } = await request.json()
@@ -37,6 +48,10 @@ export async function POST(request) {
         return NextResponse.json ({
             message: 'User was created!',
             user: data.user
+        }, {
+            headers: {
+                'Acecss-Control-Allow-Origin': '*',
+            }
         })
     } catch (error) {
         return NextResponse.json({error: 'ERROR, User not created!'}, {status: 500})

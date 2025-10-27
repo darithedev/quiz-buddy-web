@@ -1,15 +1,30 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../../supabase";
 
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': 'https://quiz-buddy-web.vercel.app',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        },
+    })
+}
+
 export async function POST(request) {
     try {
         const { fullName, email, userName, password } = await request.json()
 
         const { data, error } = await supabase.auth.signUp({
-            fullName: fullName,
             email: email,
-            userName: userName, 
-            password: password
+            password: password,
+            options: {
+                data: {
+                    fullName: fullName,
+                    userName: userName, 
+                }
+            }
         })
 
         if (error) {
@@ -23,18 +38,25 @@ export async function POST(request) {
                 full_name: fullName,
                 email: email,
                 username: userName
-                
             });
         
-        // May not need this as the status 500 is used for errors
-        //if (usersError) {
-        //    console.error('Error creating user in Supabase Database. Error: ', usersError);
-        //}
+        if (usersError) {
+            console.error('Error creating user in Supabase Database. Error: ', usersError);
+            return NextResponse.json({error: 'User not created!'}, {status: 500})
+        }
 
-        return NextResponse.json ({
+        const response = NextResponse.json ({
             message: 'User was created!',
             user: data.user
-        })
+        }, 
+            {status: 200}
+        )
+        response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+        return response;
+
     } catch (error) {
         return NextResponse.json({error: 'ERROR, User not created!'}, {status: 500})
     }

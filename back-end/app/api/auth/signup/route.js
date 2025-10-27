@@ -50,7 +50,7 @@ export async function POST(request) {
             user: data.user
         }, {
             headers: {
-                'Acecss-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': '*',
             }
         })
     } catch (error) {

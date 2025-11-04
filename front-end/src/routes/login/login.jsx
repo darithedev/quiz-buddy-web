@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"
 import "./login.scss";
 
 function Login() {
+    const nav = useNavigate();
     const [userData, setUserData] = useState({
             email: '',
             password: ''
@@ -29,11 +31,11 @@ function Login() {
             if (api.ok) {
                 alert('User successfully login!')
                 const data = await api.json();
-                if(data.session?.access_token) {
+                if(data.session?.access_token && data?.user?.id) {
                     sessionStorage.setItem('authToken', data.session.access_token);
                     sessionStorage.setItem('userId', data.user.id);
                 }
-                window.location.href = '/home';
+                nav('/home');
             } else {
                 const data = await api.json();
                 console.log('Error: ', data)

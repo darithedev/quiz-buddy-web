@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../supabase";
 
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': 'https://quiz-buddy-web.vercel.app',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        },
+    })
+}
+
 export async function POST(request) {
     try {
         const { userId, title, questions, count, score } = await request.json()
@@ -11,19 +22,32 @@ export async function POST(request) {
                 quiz_title: title,
                 num_questions:count,
                 questions: questions,
-                score: score
+                score: score || 0
             })
         
         if (error) {
-            return NextResponse.json({error: error.message}, {status: 400})
+            const errorResponse = NextResponse.json({error: error.message}, {status: 400});
+            errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return errorResponse;
         }
 
-        return NextResponse.json ({
+        const response =  NextResponse.json ({
             message: 'Quiz was created.',
             quiz: data
-        })
+        });
+        response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+        return response;
     } catch (error) {
-        return NextResponse.json({error: 'ERROR, quiz was not created! Try again.'}, {status: 500})
+        const errorResponse = NextResponse.json({error: 'ERROR, quiz was not created! Try again.'}, {status: 500});
+        errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return errorResponse;
     }
 }
 
@@ -35,33 +59,58 @@ export async function GET(request) {
 
         if (id) {
             const { data, error } = await supabase
-            .from('quizes')
+            .from('quizzes')
             .select('*')
             .eq('id', id)
             .single();
 
             if (error) {
-                return NextResponse.json({ error: error.message }, { status: 400 });
+                const errorResponse = NextResponse.json({ error: error.message }, { status: 400 });
+                errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+                errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+                return errorResponse;
             }
 
-            return NextResponse.json({ quiz: data });
+            const response = NextResponse.json({ quiz: data });
+            response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return response;
+
         }
 
         if (userId) {
             const { data, error } = await supabase
-            .from('quizzez')
+            .from('quizzes')
             .select('*')
             .eq('user_id', userId);
 
             if (error) {
-                return NextResponse.json({ error: error.message }, { status: 400 });
+                const errorResponse = NextResponse.json({ error: error.message }, { status: 400 });
+                errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+                errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+                return errorResponse;
             }
-            return NextResponse.json({ quizzez: data });
+            const response = NextResponse.json({ quizzez: data });
+            response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return response;
             
         } 
 
-        return NextResponse.json({ error: "No user id provided, try again."}, { status: 400 });
+        const errorResponse = NextResponse.json({ error: "No user id provided, try again."}, { status: 400 });
+        errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return errorResponse;
     } catch (error) {
-        return NextResponse.json({ error: 'Server error. Not connected!' }, { status: 500 });
+        const errorResponse = NextResponse.json({ error: 'Server error. Not connected!' }, { status: 500 });
+        errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return errorResponse;
     }
 }

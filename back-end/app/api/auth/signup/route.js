@@ -28,7 +28,11 @@ export async function POST(request) {
         })
 
         if (error) {
-            return NextResponse.json({error: error.message}, {status: 400})
+            const errorResponse = NextResponse.json({error: error.message}, {status: 400});
+            errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return errorResponse;
         }
 
         const { data: usersData, error:usersError } = await supabase
@@ -42,7 +46,11 @@ export async function POST(request) {
         
         if (usersError) {
             console.error('Error creating user in Supabase Database. Error: ', usersError);
-            return NextResponse.json({error: 'User not created!'}, {status: 500})
+            const errorResponse = NextResponse.json({error: 'User not created!'}, {status: 500});
+            errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return errorResponse;
         }
 
         const response = NextResponse.json ({

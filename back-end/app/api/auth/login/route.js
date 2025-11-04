@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../../supabase";
 
+export async function OPTIONS() {
+    return new Response(null, {
+        status: 200,
+        headers: {
+            'Access-Control-Allow-Origin': 'https://quiz-buddy-web.vercel.app',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        },
+    })
+}
+
 export async function POST(request) {
     try {
         const { email, password } = await request.json()

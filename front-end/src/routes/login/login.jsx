@@ -41,7 +41,7 @@ function Login() {
             }
 
         } catch (error) {
-            alert('ERROR! Account was not created. Please try again.')
+            alert('ERROR!User was not logged in! Try again!')
         }
     }
 

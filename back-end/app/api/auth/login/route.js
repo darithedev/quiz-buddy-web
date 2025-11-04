@@ -21,17 +21,35 @@ export async function POST(request) {
             password: password
         })
 
-        // May not need this as the status 500 is used for errors
-        //if (error) {
-        //    return NextResponse.json({error: error.message}, {status: 400})
-        //}
+        if (error) {
+            const errorResponse = NextResponse.json({error: error.message}, {status: 400});
+            errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return errorResponse;
+        }
 
-        return NextResponse.json ({
+        const response = NextResponse.json ({
             message: 'User logged in',
-            user: data.user
-        })
+            user: {
+                id: data.user.id,
+                email: data.user.email
+            },
+            session: {
+                access_token: data.session.access_token
+            }
+        });
+        Response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        Response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        Response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return Response;
+
 
     } catch (error) {
-        return NextResponse.json({error: 'User NOT logged in.'}, {status: 500})
+        const errorResponse = NextResponse.json({error: 'User NOT logged in.'}, {status: 500});
+        errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return errorResponse;
     }
 }

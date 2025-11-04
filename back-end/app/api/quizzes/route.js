@@ -1,5 +1,39 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../supabase";
+import { createClient } from "@supabase/supabase-js";
+
+async function getAuth(request) {
+    const authh = request.headers.get('Authorization');
+
+    if(!authh) {
+        throw new Error('ERROR!! Missing auth token!');
+    }
+
+    const token = authh.replace('Bearer ', '');
+
+    const authSupabase = createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_KEY,
+        {
+            global: {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        }
+    );
+
+    const { data, error } = await authSupabase.auth.getUser(token);
+
+    if (error || !data.user) {
+        throw new Error('ERROR!! Token not valid!')
+    }
+
+    return {
+        authSupabase: authSupabase,
+        userId: data.user.id
+    };
+}
 
 export async function OPTIONS() {
     return new Response(null, {

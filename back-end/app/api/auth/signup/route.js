@@ -69,7 +69,10 @@ export async function POST(request) {
 
         const response = NextResponse.json ({
             message: 'User was created!',
-            user: data.user
+            user: {
+                if: data.user.id,
+                email: data.user.email
+            }
         }, 
             {status: 200}
         )
@@ -80,6 +83,10 @@ export async function POST(request) {
         return response;
 
     } catch (error) {
-        return NextResponse.json({error: 'ERROR, User not created!'}, {status: 500})
+        const errorResponse = NextResponse.json({error: 'ERROR, User not created!'}, {status: 500});
+        errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return errorResponse;
     }
 }

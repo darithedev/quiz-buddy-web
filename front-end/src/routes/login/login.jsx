@@ -60,6 +60,7 @@ function Login() {
                                 <Form.Label className="color-sec">Email </Form.Label>
                                 <Form.Control 
                                     className="text-box"
+                                    name="email"
                                     value={userData.email}
                                     onChange={handleChange}
                                     required type="email" 
@@ -70,6 +71,7 @@ function Login() {
                                 <Form.Label className="color-sec">Password </Form.Label>
                                 <Form.Control 
                                     className="text-box" 
+                                    name="password"
                                     value={userData.password}
                                     onChange={handleChange}
                                     required type="password" 

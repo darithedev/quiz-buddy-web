@@ -36,46 +36,27 @@ export async function POST(request) {
             return errorResponse;
         }
 
-        let usersData, usersError;
-
-        if (data.session) {
-            const authSupabase = createClient(
-                process.env.SUPABASE_URL,
-                process.env.SUPABASE_KEY,
-                {
-                    global: {
-                        headers: {
-                            Authorization: `Bearer ${data.session.access_token}`
-                        }
+        const authSupabase = createClient(
+            process.env.SUPABASE_URL,
+            process.env.SUPABASE_KEY,
+            {
+                global: {
+                    headers: {
+                        Authorization: `Bearer ${data.session.access_token}`
                     }
                 }
-            );
-            const result = await authSupabase
-                .from('users')
-                .insert({
-                    id: data.user.id,
-                    full_name: fullName,
-                    email: email,
-                    username: userName
-                });
-            usersData = result.data;
-            usersError = result.error;
-        } else {
-            const result = await supabase
-                .from('users')
-                .insert({
-                    id: data.user.id,
-                    full_name: fullName,
-                    email: email,
-                    username: userName
-                });
-            usersData = result.data;
-            usersError = result.error;
-
-            if (usersError) {
-                console.error('Error, user not added to db')
             }
-        }
+        );
+            
+        const result = await authSupabase
+            .from('users')
+            .insert({
+                id: data.user.id,
+                full_name: fullName,
+                email: email,
+                username: userName
+            });
+
         
         if (usersError) {
             console.error('Error creating user in Supabase Database. Error: ', usersError);

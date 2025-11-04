@@ -39,10 +39,10 @@ export async function POST(request) {
                 access_token: data.session.access_token
             }
         });
-        Response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
-        Response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        Response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        return Response;
+        response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
 
 
     } catch (error) {

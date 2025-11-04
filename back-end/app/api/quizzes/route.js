@@ -87,12 +87,13 @@ export async function POST(request) {
 
 export async function GET(request) {
     try {
+        const { authSupabase, userUser } = await getAuth(request);
         const { searchParams } = new URL(request.url);
         const id = searchParams.get('id');
         const userId = searchParams.get('userId');
 
         if (id) {
-            const { data, error } = await supabase
+            const { data, error } = await authSupabase
             .from('quizzes')
             .select('*')
             .eq('id', id)
@@ -114,33 +115,33 @@ export async function GET(request) {
 
         }
 
-        if (userId) {
-            const { data, error } = await supabase
+        const { data, error } = await authSupabase
             .from('quizzes')
             .select('*')
             .eq('user_id', userId);
 
-            if (error) {
-                const errorResponse = NextResponse.json({ error: error.message }, { status: 400 });
-                errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
-                errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-                errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-                return errorResponse;
-            }
-            const response = NextResponse.json({ quizzez: data });
-            response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
-            response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-            return response;
-            
-        } 
+        if (error) {
+            const errorResponse = NextResponse.json({ error: error.message }, { status: 400 });
+            errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return errorResponse;
+        }
+        const response = NextResponse.json({ quizzez: data });
+        response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
 
-        const errorResponse = NextResponse.json({ error: "No user id provided, try again."}, { status: 400 });
-        errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
-        errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        return errorResponse;
     } catch (error) {
+        if (error.message === 'ERROR!! NO auth token!' || error.message === 'ERROR!! token invalid!') {
+            const errorResponse = NextResponse.json({ error: error.message }, { status: 401 });
+            errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return errorResponse;
+
+        }
         const errorResponse = NextResponse.json({ error: 'Server error. Not connected!' }, { status: 500 });
         errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
         errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');

@@ -1,4 +1,4 @@
-import React , { useEffect, useState } from "react";
+import React , { useState } from "react";
 import { Button, Navbar, Nav, Container, Card, Form } from "react-bootstrap";
 import "./create-quiz.scss";
 
@@ -6,20 +6,6 @@ function CreateQuiz() {
     const [title, setTitle] = useState("");
     const [numOfQuestions, setNumOfQuestions] = useState("");
     const [questionsOrg, setQuestionsOrg] = useState("");
-    const [quizID, setQuizID] = useState("");
-
-    useEffect(() => {
-        const edit = localStorage.getItem('editing');
-        if (edit) {
-            const quiz = JSON.parse(edit);
-            setTitle(quiz.title);
-            setNumOfQuestions(quiz.questions.length.toString());
-            setQuizID(quiz.id);
-
-            setQuestionsOrg(quiz.createdQuiz);
-            localStorage.removeItem('editing');
-        }
-    }, []);
 
     function createQuiz(questions, numQuestions) {
         const questionsArr = [];
@@ -91,53 +77,35 @@ function CreateQuiz() {
         }
     }
 
-    function quizzes() {
-        const getQuizzes = localStorage.getItem("quizzes");
-        return getQuizzes ? JSON.parse(getQuizzes) : [];
+    async function quizSave(questions) {
+        const token = sessionStorage.getItem('authToken');
+
+        if (!token) {
+            throw new Error('Error!! Not authorized!! Please login!');
+        }
+
+        const URL = import.meta.env.VITE_API_URL;
+        const api = await fetch(`${URL}/api/quizzes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                title: title.trim(),
+                questions: questions,
+                count: Number(numOfQuestions),
+                created_quiz_editor: questionsOrg
+            })
+        });
+
+        if (!api.ok) {
+            const data = await api.json();
+            throw new Error(data.error || 'ERROR!! Quiz was not created!');
+        }
     }
 
-    function newQuizObject(questions) {
-        const newQuiz = quizzes();
-        const incrementID = newQuiz.length + 1;
-        const quiz = { 
-            id: incrementID.toString(),
-            title: title.trim(),
-            questions,
-            createdQuiz: questionsOrg,
-        };
-
-        return quiz;
-    }
-
-    function updatedQuizObject(questions) {
-        const quizUpdate = { 
-            id: quizID,
-            title: title.trim(),
-            questions,
-            createdQuiz: questionsOrg,
-        };
-
-        return quizUpdate;
-    }
-
-    function saveQuiz(questions) {
-        const save = newQuizObject(questions);
-        const existing = quizzes();
-
-        existing.push(save);
-        localStorage.setItem("quizzes", JSON.stringify(existing));
-    }
-
-    function updateAQuiz(questions) {
-        const update = updatedQuizObject(questions);
-        const existing = quizzes();
-        const updated = existing.map(q =>
-            q.id === quizID ? update : q
-        );
-        localStorage.setItem("quizzes", JSON.stringify(updated));
-    }
-
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
 
         try {
@@ -147,11 +115,7 @@ function CreateQuiz() {
             const num = Number(numOfQuestions);
             const ques = createQuiz(questionsOrg, num);
 
-            if (quizID) {
-                updateAQuiz(ques);
-            } else {
-                saveQuiz(ques);
-            }
+            await saveQuiz(ques);
 
             window.location.href = "/home";
         } catch (error) {

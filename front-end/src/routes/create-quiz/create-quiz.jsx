@@ -1,4 +1,4 @@
-import React , { useState } from "react";
+import React , { useState, useEffect } from "react";
 import { Button, Navbar, Nav, Container, Card, Form } from "react-bootstrap";
 import "./create-quiz.scss";
 
@@ -6,6 +6,44 @@ function CreateQuiz() {
     const [title, setTitle] = useState("");
     const [numOfQuestions, setNumOfQuestions] = useState("");
     const [questionsOrg, setQuestionsOrg] = useState("");
+    const [quizID, setQuizID] = useState("");
+
+    useEffect(() => {
+        const url = new URLSearchParams(window.location.search);
+        const editId = url.get('edit');
+
+        if (editId) {
+            setQuizID(editId);
+            quizEditMode(editId);
+        }
+    }, []);
+
+    async function quizEditMode(quizId) {
+        const token = sessionStorage.getItem('authToken');
+
+        if (!token) {
+            return;
+        }
+
+        try {
+            const URL = import.meta.env.VITE_API_URL;
+            const api = await fetch(`${URL}/api/quizzes?id=${quizId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!api.ok) {
+                const data = await api.json();
+                const quiz = data.quiz;
+                setTitle(quiz.quiz_title);
+                setNumOfQuestions(quiz.num_questions.toString());
+                setQuestionsOrg(quiz.created_quiz_editor);
+            }
+        } catch (error) {
+            console.error('ERROR!! Quiz not loading in edit mode! Error: ', error);
+        }
+    }
 
     function createQuiz(questions, numQuestions) {
         const questionsArr = [];
@@ -85,8 +123,10 @@ function CreateQuiz() {
         }
 
         const URL = import.meta.env.VITE_API_URL;
-        const api = await fetch(`${URL}/api/quizzes`, {
-            method: 'POST',
+        const method = quizID ? 'PUT' : 'POST';
+        const endPoint = quizID ? `${URL}/api/quizzes?id=${quizID}` : `${URL/api/quizzes}`;
+        const api = await fetch(endPoint, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -101,7 +141,7 @@ function CreateQuiz() {
 
         if (!api.ok) {
             const data = await api.json();
-            throw new Error(data.error || 'ERROR!! Quiz was not created!');
+            throw new Error(data.error || `ERROR!! Quiz was not ${quizID ? 'updated' : 'created'} !`);
         }
     }
 
@@ -115,7 +155,7 @@ function CreateQuiz() {
             const num = Number(numOfQuestions);
             const ques = createQuiz(questionsOrg, num);
 
-            await saveQuiz(ques);
+            await quizSave(ques);
 
             window.location.href = "/home";
         } catch (error) {

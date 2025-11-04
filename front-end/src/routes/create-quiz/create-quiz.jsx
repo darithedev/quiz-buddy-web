@@ -28,12 +28,12 @@ function CreateQuiz() {
         try {
             const URL = import.meta.env.VITE_API_URL;
             const api = await fetch(`${URL}/api/quizzes?id=${quizId}`, {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            if (!api.ok) {
+            if (api.ok) {
                 const data = await api.json();
                 const quiz = data.quiz;
                 setTitle(quiz.quiz_title);
@@ -124,7 +124,7 @@ function CreateQuiz() {
 
         const URL = import.meta.env.VITE_API_URL;
         const method = quizID ? 'PUT' : 'POST';
-        const endPoint = quizID ? `${URL}/api/quizzes?id=${quizID}` : `${URL/api/quizzes}`;
+        const endPoint = quizID ? `${URL}/api/quizzes?id=${quizID}` : `${URL}/api/quizzes`;
         const api = await fetch(endPoint, {
             method: method,
             headers: {

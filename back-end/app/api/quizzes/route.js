@@ -48,15 +48,36 @@ export async function OPTIONS() {
 
 export async function POST(request) {
     try {
-        const { userId, title, questions, count, score } = await request.json()
-        const { data, error } = await supabase
+        const { authSupabase, userId } = await getAuth(request);
+        const { title, questions, count, created_quiz_editor } = await request.json();
+
+        const { count: quizCount } = await authSupabase
+            .from('quizzes')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', userId)
+
+        let quizNum = 1;
+        if (quizCount) {
+            quizNum = quizCount + 1;
+        }
+
+        let quizId = quizNum.toString();
+        if (quizNum < 10) {
+            quizId = "00" + quizId;
+        } else if (quizNum < 100) {
+            quizId = '0' + quizId;
+        }
+
+        const { data, error } = await authSupabase
             .from('quizzes')
             .insert({
+                id: quizId,
                 user_id:userId,
                 quiz_title: title,
                 num_questions:count,
                 questions: questions,
-                score: score || 0
+                created_quiz_editor: created_quiz_editor,
+                score: 0
             })
         
         if (error) {
@@ -67,7 +88,7 @@ export async function POST(request) {
             return errorResponse;
         }
 
-        const response =  NextResponse.json ({
+        const response = NextResponse.json ({
             message: 'Quiz was created.',
             quiz: data
         });
@@ -77,7 +98,15 @@ export async function POST(request) {
 
         return response;
     } catch (error) {
-        const errorResponse = NextResponse.json({error: 'ERROR, quiz was not created! Try again.'}, {status: 500});
+        if (error.message === 'ERROR!! NO auth token!' || error.message === 'ERROR!! token invalid!') {
+            const errorResponse = NextResponse.json({error: error.message}, {status: 401});
+            errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
+            errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return errorResponse;
+        }
+
+        const errorResponse = NextResponse.json({ error: 'ERROR!! Quiz not created!!' }, { status: 500 });
         errorResponse.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
         errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -87,17 +116,17 @@ export async function POST(request) {
 
 export async function GET(request) {
     try {
-        const { authSupabase, userUser } = await getAuth(request);
+        const { authSupabase, userId } = await getAuth(request);
         const { searchParams } = new URL(request.url);
         const id = searchParams.get('id');
-        const userId = searchParams.get('userId');
+        const userIdP = searchParams.get('userId');
 
         if (id) {
             const { data, error } = await authSupabase
-            .from('quizzes')
-            .select('*')
-            .eq('id', id)
-            .single();
+                .from('quizzes')
+                .select('*')
+                .eq('id', id)
+                .single();
 
             if (error) {
                 const errorResponse = NextResponse.json({ error: error.message }, { status: 400 });

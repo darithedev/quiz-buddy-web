@@ -1,8 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import "./login.scss";
 
 function Login() {
+    const [userData, setUserData] = useState({
+            email: '',
+            password: ''
+        });
+
+    const handleChange = (event) => {
+        setUserData({
+            ...userData,
+            [event.target.name]: event.target.value
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const URL = import.meta.env.VITE_API_URL
+            const api = await fetch(`${URL}/api/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            });
+
+            if (api.ok) {
+                alert('User successfully login!')
+                const data = await api.json();
+                if(data.session?.access_token) {
+                    sessionStorage.setItem('authToken', data.session.access_token);
+                    sessionStorage.setItem('userId', data.user.id);
+                }
+                window.location.href = '/';
+            } else {
+                const data = await api.json();
+                console.log('Error: ', data)
+                alert(data.error || 'User was not logged in!');
+            }
+
+        } catch (error) {
+            alert('ERROR! Account was not created. Please try again.')
+        }
+    }
 
     return(
         <div className="login-wrapper">
@@ -11,20 +52,32 @@ function Login() {
                     <div className="text-center mb-4 color-sec">
                         <Card.Title className="mb-4" as="h1">QuizBuddy</Card.Title>
                         <Card.Title className="mb-3" as="h2">Welcome Back!</Card.Title>
-                        <Card.Subtitle className="mb-2">Please Login by Entering Your Username and Password</Card.Subtitle>
+                        <Card.Subtitle className="mb-2">Please Login by Entering Your Email and Password</Card.Subtitle>
                     </div>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <div>
-                            <Form.Group className="mb-3" controlId="formUser">
-                                <Form.Label className="color-sec">User Name </Form.Label>
-                                <Form.Control className="text-box" required type="text" placeholder=" User Name" />
+                            <Form.Group className="mb-3" controlId="formEmail">
+                                <Form.Label className="color-sec">Email </Form.Label>
+                                <Form.Control 
+                                    className="text-box"
+                                    value={userData.email}
+                                    onChange={handleChange}
+                                    required type="email" 
+                                    placeholder=" example@mail.com" 
+                                />
                             </Form.Group>
                             <Form.Group className="mb-4" controlId="formPassword">
                                 <Form.Label className="color-sec">Password </Form.Label>
-                                <Form.Control className="text-box" required type="password" placeholder=" Password" />
+                                <Form.Control 
+                                    className="text-box" 
+                                    value={userData.password}
+                                    onChange={handleChange}
+                                    required type="password" 
+                                    placeholder=" Password" 
+                                />
                             </Form.Group>
                             <Form.Group className="mb-5 button-wrapper">
-                                <Button href="/home" type="submit" className="mt-2 w-100 button-sec">
+                                <Button type="submit" className="mt-2 w-100 button-sec">
                                     <strong>Login</strong>
                                 </Button>
                             </Form.Group>

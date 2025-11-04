@@ -33,7 +33,7 @@ function Login() {
                     sessionStorage.setItem('authToken', data.session.access_token);
                     sessionStorage.setItem('userId', data.user.id);
                 }
-                window.location.href = '/';
+                window.location.href = '/home';
             } else {
                 const data = await api.json();
                 console.log('Error: ', data)

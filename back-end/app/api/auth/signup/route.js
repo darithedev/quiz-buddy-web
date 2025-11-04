@@ -48,7 +48,7 @@ export async function POST(request) {
             }
         );
             
-        const result = await authSupabase
+        const {data: usersData, error: usersError} = await authSupabase
             .from('users')
             .insert({
                 id: data.user.id,
@@ -70,7 +70,7 @@ export async function POST(request) {
         const response = NextResponse.json ({
             message: 'User was created!',
             user: {
-                if: data.user.id,
+                id: data.user.id,
                 email: data.user.email
             }
         }, 

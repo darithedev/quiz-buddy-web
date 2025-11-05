@@ -51,12 +51,18 @@ export async function POST(request) {
         const { authSupabase, userId } = await getAuth(request);
         const { title, questions, count, created_quiz_editor } = await request.json();
 
-        const { count: quizCount } = await supabase
+        const { data: quizCount } = await supabase
             .from('quizzes')
-            .select('*', { count: 'exact', head: true })
+            .select('id')
+            .order('id', { ascending: false })
+            .limit(1);
 
         let quizNum = 1;
-        if (quizCount) {
+        if (quizCount && quizCount.length > 0) {
+            const idd = parseInt(quizCount[0].id);
+            if(!isNaN(idd)) {
+                quizNum = idd + 1;
+            }
             quizNum = quizCount + 1;
         }
 

@@ -23,7 +23,7 @@ function Home() {
         try {
             const apiURL = import.meta.env.VITE_API_URL;
 
-            if (apiURL) {
+            if (!apiURL) {
                 console.error('ERROR!! Issue with api URL!!');
                 return;
             }
@@ -104,7 +104,7 @@ function Home() {
                             <div className="mb-3" key={q.id}>
                                 <div className="quiz-content">
                                     <Button href={`/quiz?id=${q.id}`} type="button" className="button-primary-md quiz-title-button">
-                                        <strong>{q.quiz.title}</strong>
+                                        <strong>{q.quiz_title}</strong>
                                     </Button>
                                 </div>
                             </div>

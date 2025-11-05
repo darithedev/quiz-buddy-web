@@ -51,7 +51,7 @@ export async function POST(request) {
         const { authSupabase, userId } = await getAuth(request);
         const { title, questions, count, created_quiz_editor } = await request.json();
 
-        const { count: quizCount } = await authSupabase
+        const { count: quizCount } = await supabase
             .from('quizzes')
             .select('*', { count: 'exact', head: true })
 

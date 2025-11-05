@@ -54,7 +54,6 @@ export async function POST(request) {
         const { count: quizCount } = await authSupabase
             .from('quizzes')
             .select('*', { count: 'exact', head: true })
-            .eq('user_id', userId)
 
         let quizNum = 1;
         if (quizCount) {

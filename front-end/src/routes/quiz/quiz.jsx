@@ -12,25 +12,46 @@ function Quiz({quizName, question}) {
     const [modal, showModal] = useState(false);
 
     useEffect(() => {
-        const url = window.location.href;
-        const skip = url.indexOf('id=') + 3;
-        const quizID = url.substring(skip);
-        const local = localStorage.getItem("quizzes");
+        const url = new URLSearchParams(window.location.search);
+        const quizID = url.get('id');
 
-        let quizzes = [];
-        if (local) {
-            quizzes = JSON.parse(local);
+        if (quizID) {
+            loadQuiz(quizID);
         }
-
-        let thisQuiz = null;
-        for (let i = 0; i < quizzes.length; i++) {
-            if (quizzes[i].id === quizID) {
-                thisQuiz = quizzes[i];
-                break;
-            }
-        }
-        setQuiz(thisQuiz);
     }, []);
+
+    async function loadQuiz(quizID) {
+        const token = sessionStorage.getItem('authToken');
+
+        if(!token) {
+            return;
+        }
+
+        try {
+            const apiURL = import.meta.env.VITE_API_URL;
+
+            if(!apiURL) {
+                console.error('ERROR!! issue with URL');
+                return;
+            }
+
+            const api = await fetch(`${apiURL}/api/quizzes?id=${quizID}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (api.ok) {
+                const data = await api.json();
+                setQuiz(data.quiz);
+            }
+
+        } catch (error) {
+            console.error('ERROR!! Quiz not loading in edit mode! Error: ', error);
+            setQuiz(null);
+        }
+    }
 
     let thisThis = null;
     if (quiz && quiz.questions && quiz.questions[current]) {

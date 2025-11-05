@@ -54,16 +54,11 @@ export async function POST(request) {
         const { data: quizCount } = await supabase
             .from('quizzes')
             .select('id')
-            .order('id', { ascending: false })
-            .limit(1);
 
         let quizNum = 1;
         if (quizCount && quizCount.length > 0) {
-            const idd = parseInt(quizCount[0].id);
-            if(!isNaN(idd)) {
-                quizNum = idd + 1;
-            }
-            quizNum = quizCount + 1;
+            const idd = Math.max(...quizCount.map(quiz => parseInt(quiz.id) || 0));
+            quizNum = idd + 1;
         }
 
         let quizId = quizNum.toString();

@@ -26,8 +26,14 @@ function CreateQuiz() {
         }
 
         try {
-            const URL = import.meta.env.VITE_API_URL;
-            const api = await fetch(`${URL}/api/quizzes?id=${quizId}`, {
+            const apiURL = import.meta.env.VITE_API_URL;
+
+            if(!apiURL) {
+                console.error('ERROR!! issue with URL');
+                return;
+            }
+
+            const api = await fetch(`${apiURL}/api/quizzes?id=${quizId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -122,9 +128,14 @@ function CreateQuiz() {
             throw new Error('Error!! Not authorized!! Please login!');
         }
 
-        const URL = import.meta.env.VITE_API_URL;
+        const apiURL = import.meta.env.VITE_API_URL;
+
+        if(!apiURL) {
+            throw new Error('ERROR!! issue with URL');
+        }
+
         const method = quizID ? 'PUT' : 'POST';
-        const endPoint = quizID ? `${URL}/api/quizzes?id=${quizID}` : `${URL}/api/quizzes`;
+        const endPoint = quizID ? `${apiURL}/api/quizzes?id=${quizID}` : `${apiURL}/api/quizzes`;
         const api = await fetch(endPoint, {
             method: method,
             headers: {

@@ -12,24 +12,12 @@ function Quiz({quizName, question}) {
     const [modal, showModal] = useState(false);
 
     useEffect(() => {
-        const url = window.location.href;
-        const skip = url.indexOf('id=') + 3;
-        const quizID = url.substring(skip);
-        const local = localStorage.getItem("quizzes");
+        const url = new URLSearchParams(window.location.search);
+        const quizID = url.get('id');
 
-        let quizzes = [];
-        if (local) {
-            quizzes = JSON.parse(local);
+        if (quizID) {
+            loadQuiz(quizID);
         }
-
-        let thisQuiz = null;
-        for (let i = 0; i < quizzes.length; i++) {
-            if (quizzes[i].id === quizID) {
-                thisQuiz = quizzes[i];
-                break;
-            }
-        }
-        setQuiz(thisQuiz);
     }, []);
 
     let thisThis = null;

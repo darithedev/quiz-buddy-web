@@ -5,15 +5,49 @@ import "./home.scss";
 
 function Home() {
 
-    const [quizzes, showQuizes] = useState([]);
+    const [quizzes, showQuizzes] = useState([]);
     //const [deleteModal, setDeleteModal] = useState(false);
     //const [quizDelete, setQuizDelete] = useState("");
 
     useEffect(() => { 
-        const local = localStorage.getItem("quizzes");
-        const q = local ? JSON.parse(local) : [];
-        showQuizes(q);
+        loadQuizzes();
     }, []);
+
+    async function loadQuizzes() {
+        const token = sessionStorage.getItem('authToken');
+
+        if (!token) {
+            return;
+        }
+
+        try {
+            const apiURL = import.meta.env.VITE_API_URL;
+
+            if (apiURL) {
+                console.error('ERROR!! Issue with api URL!!');
+                return;
+            }
+
+            const api = await fetch(`${apiURL}/api/quizzes`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (api.ok) {
+                const data = await api.json();
+                showQuizzes(data.quizzes || []);
+            } else {
+                const errorData = await api.json();
+                console.error('ERROR!! Quizzes not found! Error: ', errorData.error);
+                showQuizzes([]);
+            }
+        } catch (error) {
+            console.error('ERROR!! Quizzes not loaded!', error);
+            showQuizzes([]);
+        }
+    }
 
     {/* Future feat for updating and deleting quizzes */}
     {/*const deleteWarning = (quiz) => {
@@ -37,6 +71,8 @@ function Home() {
         localStorage.setItem("updating", JSON.stringify(quiz));
         window.location.href = "/crete-quiz";
     }*/}
+
+    
     
     return (
         <div className="home-wrapper">
@@ -68,7 +104,7 @@ function Home() {
                             <div className="mb-3" key={q.id}>
                                 <div className="quiz-content">
                                     <Button href={`/quiz?id=${q.id}`} type="button" className="button-primary-md quiz-title-button">
-                                        <strong>{q.title}</strong>
+                                        <strong>{q.quiz.title}</strong>
                                     </Button>
                                 </div>
                             </div>

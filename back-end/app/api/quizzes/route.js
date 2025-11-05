@@ -140,7 +140,7 @@ export async function GET(request) {
             errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
             return errorResponse;
         }
-        const response = NextResponse.json({ quizzez: data });
+        const response = NextResponse.json({ quizzes: data });
         response.headers.set('Access-Control-Allow-Origin', 'https://quiz-buddy-web.vercel.app');
         response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');

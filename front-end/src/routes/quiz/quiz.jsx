@@ -20,6 +20,39 @@ function Quiz({quizName, question}) {
         }
     }, []);
 
+    async function loadQuiz(quizID) {
+        const token = sessionStorage.getItem('authToken');
+
+        if(!token) {
+            return;
+        }
+
+        try {
+            const apiURL = import.meta.env.VITE_API_URL;
+
+            if(!apiURL) {
+                console.error('ERROR!! issue with URL');
+                return;
+            }
+
+            const api = await fetch(`${apiURL}/api/quizzes?id=${quizID}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (api.ok) {
+                const data = await api.json();
+                setQuiz(data.quiz);
+            }
+
+        } catch (error) {
+            console.error('ERROR!! Quiz not loading in edit mode! Error: ', error);
+            setQuiz(null);
+        }
+    }
+
     let thisThis = null;
     if (quiz && quiz.questions && quiz.questions[current]) {
         thisThis = quiz.questions[current];

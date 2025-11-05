@@ -51,23 +51,7 @@ export async function POST(request) {
         const { authSupabase, userId } = await getAuth(request);
         const { title, questions, count, created_quiz_editor } = await request.json();
 
-        const { data: quizCount } = await supabase
-            .from('quizzes')
-            .select('id')
-
-        let quizNum = 1;
-        if (quizCount && quizCount.length > 0) {
-            const idd = Math.max(...quizCount.map(quiz => parseInt(quiz.id) || 0));
-            quizNum = idd + 1;
-        }
-
-        let quizId = quizNum.toString();
-        if (quizNum < 10) {
-            quizId = "00" + quizId;
-        } else if (quizNum < 100) {
-            quizId = '0' + quizId;
-        }
-
+        const quizId = Date.now().toString() + Math.random().toString()
         const { data, error } = await authSupabase
             .from('quizzes')
             .insert({

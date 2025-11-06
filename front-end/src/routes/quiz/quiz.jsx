@@ -83,20 +83,17 @@ function Quiz() {
         }
 
         const questArray = Array.isArray(quiz.questions) ? quiz.questions : [];
-
-        if (selected == 0) { // set to default
-            setScore(score + 1);
-        }
+        const correctAns = selected === 0;
 
         if (current + 1 < questArray.length) {
+            if(correctAns) {
+                setScore(prevScore => prevScore+ 1);
+            }
             setCurrent(current + 1);
             setSelected(null);
         } else {
-            let total = score;
-            if (selected === 0) { // set to default
-                total = score + 1;
-            }
-            setFinal(total);
+            const finalSc = correctAns ? score + 1 : score;
+            setFinal(finalSc);
             showModal(true);
         }
     }

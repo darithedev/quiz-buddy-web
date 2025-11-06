@@ -59,7 +59,7 @@ function Quiz() {
         if (arr.length > 0 && arr[current]) {
             const quest = arr[current];
 
-            if (quest & quest.question) {
+            if (quest && quest.question) {
                 thisThis = quest;
             }
         }
@@ -110,7 +110,7 @@ function Quiz() {
 
             {quiz && (
                 <div className="mb-3">
-                    <h2 className="text-center">Quiz - {quiz.quiz_title}</h2>
+                    <h2 className="text-center title-link">{quiz.quiz_title}</h2>
                 </div>
             )}
             <Card className="mt-8 quiz-card">

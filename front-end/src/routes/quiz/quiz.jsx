@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Navbar, Nav, Container, Card, Form, Modal, ModalFooter } from "react-bootstrap";
 import "./quiz.scss";
 
-function Quiz({quizName, question}) {
+function Quiz() {
 
     const [selected, setSelected] = useState(null);
     const [current, setCurrent] = useState(0);
@@ -54,8 +54,15 @@ function Quiz({quizName, question}) {
     }
 
     let thisThis = null;
-    if (quiz && quiz.questions && quiz.questions[current]) {
-        thisThis = quiz.questions[current];
+    if (quiz && quiz.questions) {
+        const arr = Array.isArray(quiz.questions) ? quiz.questions : [];
+        if (arr.length > 0 && arr[current]) {
+            const quest = arr[current];
+
+            if (quest & quest.question) {
+                thisThis = quest;
+            }
+        }
     }
 
     const handleSubmit = (e) => {
@@ -65,11 +72,13 @@ function Quiz({quizName, question}) {
             return;
         }
 
+        const questArray = Array.isArray(quiz.questions) ? quiz.questions : [];
+
         if (selected == 0) { // set to default
             setScore(score + 1);
         }
 
-        if (current + 1 < quiz.questions.length) {
+        if (current + 1 < questArray.length) {
             setCurrent(current + 1);
             setSelected(null);
         } else {
@@ -99,15 +108,18 @@ function Quiz({quizName, question}) {
                 </Container>
             </Navbar>
 
-            {/*Fix this showing above nav bar*/}
-            {/*<div className="mb-3">
-                <h2>Quiz - {quizName}</h2>
-            </div>*/}
+            {quiz && (
+                <div className="mb-3">
+                    <h2 className="text-center">Quiz - {quiz.quiz_title}</h2>
+                </div>
+            )}
             <Card className="mt-8 quiz-card">
                 <Form onSubmit={handleSubmit}>
                     <div>
                         <Form.Group className="mb-3" controlId="questions">
-                            <Card.Title as="h2" className="color">{!quiz ? "No Quizzes found" : !thisThis ? "Loading..." : `${current + 1}. ${thisThis.question}`}</Card.Title>
+                            <Card.Title as="h2" className="color">
+                                {!quiz ? "No Quizzes found" : !thisThis || !thisThis.question ? "Loading..." : `${current + 1}. ${thisThis.question}`}
+                            </Card.Title>
                         </Form.Group>
                         {quiz && thisThis && thisThis.multipleChoice && thisThis.multipleChoice.map((chosen, letter) => (
                             <Form.Group className="mb-3" controlId={`chosen-${letter}`} key={letter}>
@@ -116,7 +128,7 @@ function Quiz({quizName, question}) {
                         ))}
 
                         <Form.Group className="button-wrapper text-end">
-                            {quiz && (
+                            {quiz && Array.isArray(quiz.questions) && (
                                 <Button href="" type="submit" className="mt-2 w-100 button-sm" disabled={selected === null}>
                                     <strong>{current + 1 < quiz.questions.length ? "Next" : "Finish"}</strong>
                                 </Button>
@@ -130,8 +142,7 @@ function Quiz({quizName, question}) {
                 <Modal.Title>You Completed Your Quiz!</Modal.Title>
                 <Modal.Body>
                     <div>
-                        <h3>Your Score: {final} / {quiz?.questions.length}</h3>
-                        {/*<p className="mt-3"></p>*/}
+                        <h3>Your Score: {final} / {quiz && Array.isArray(quiz.questions) ? quiz.questions.length : 0}</h3>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

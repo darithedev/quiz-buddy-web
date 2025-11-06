@@ -139,7 +139,7 @@ function Quiz() {
 
                         <Form.Group className="button-wrapper text-end">
                             {quiz && Array.isArray(quiz.questions) && (
-                                <Button href="" type="submit" className="mt-2 w-100 button-sm" disabled={selected === null}>
+                                <Button type="submit" className="mt-2 w-100 button-sm" disabled={selected === null}>
                                     <strong>{current + 1 < quiz.questions.length ? "Next" : "Finish"}</strong>
                                 </Button>
                             )}

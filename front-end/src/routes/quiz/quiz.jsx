@@ -44,6 +44,16 @@ function Quiz() {
 
             if (api.ok) {
                 const data = await api.json();
+                const quizData = data.quiz;
+
+                if (quizData.questions && typeof quizData.questions === 'string') {
+                    try {
+                        quizData.questions = JSON.parse(quizData.questions);
+                    } catch (error) {
+                        console.error('ERROR!! Incorrect quiz format. Error: ', error);
+                        quizData.questions = [];
+                    }
+                }
                 setQuiz(data.quiz);
             }
 

@@ -81,7 +81,8 @@ function CreateQuiz() {
             } else if (thisQuest) {
                 if (thisLine.includes('(')) {
                     const rightAnswer = thisLine.replace(/^\([a-eA-E]\.?\)\s*/, "").trim();
-                    thisQuest.multipleChoice.push(rightAnswer); 
+                    thisQuest.multipleChoice.push(rightAnswer);
+                    thisQuest.CorrectAnsIndex = thisQuest.multipleChoice.length - 1; 
                 } else {
                     const answer = thisLine.replace(/^[a-eA-E]\.\s*/, "").trim();
                     thisQuest.multipleChoice.push(answer);

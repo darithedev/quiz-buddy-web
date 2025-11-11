@@ -83,7 +83,9 @@ function Quiz() {
         }
 
         const questArray = Array.isArray(quiz.questions) ? quiz.questions : [];
-        const correctAns = selected === 0;
+        const currentQuest = questArray[current];
+        const correctAnsIndex = currentQuest?.correctAnsIndex ?? 0;
+        const correctAns = selected === correctAnsIndex;
 
         if (current + 1 < questArray.length) {
             if(correctAns) {
@@ -92,8 +94,11 @@ function Quiz() {
             setCurrent(current + 1);
             setSelected(null);
         } else {
-            const finalSc = correctAns ? score + 1 : score;
-            setFinal(finalSc);
+            setScore(prevScore => {
+                const finalSc = correctAns ? prevScore + 1 : prevScore;
+                setFinal(finalSc);
+                return finalSc
+            });
             showModal(true);
         }
     }

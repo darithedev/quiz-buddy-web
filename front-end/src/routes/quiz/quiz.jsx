@@ -100,14 +100,13 @@ function Quiz() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!quiz || selected === null) {
+        if (!quiz) {
             return;
         }
 
         const questArray = Array.isArray(quiz.questions) ? quiz.questions : [];
         const currentQuest = questArray[current];
         const correctAnsIndex = currentQuest?.correctAnsIndex ?? 0;
-        const correctAns = selected === correctAnsIndex;
 
         setAnswerBank(prevAnswerBank => ({
             ...prevAnswerBank,
@@ -179,7 +178,7 @@ function Quiz() {
                                     ) : (
                                         <div></div>
                                     )}
-                                    <Button type="submit" className="mt-2 w-100 button-sm" disabled={selected === null}>
+                                    <Button type="submit" className="mt-2 w-100 button-sm">
                                         <strong>{current + 1 < quiz.questions.length ? "Next" : "Finish"}</strong>
                                     </Button>
                                 </div>

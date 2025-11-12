@@ -8,10 +8,12 @@ function Quiz() {
     const [selected, setSelected] = useState(null);
     const [current, setCurrent] = useState(0);
     const [quiz, setQuiz] = useState(null);
-    const [score, setScore] = useState(0);
     const [final, setFinal] = useState(0);
-    const [modal, showModal] = useState(false);
     const [answerBank, setAnswerBank] = useState({});
+
+    const [modal, showModal] = useState(false);
+    const [warningModal, setWarningModal] = useState(false);
+    
 
     useEffect(() => {
         const url = new URLSearchParams(window.location.search);
@@ -120,17 +122,24 @@ function Quiz() {
             const next = updatedAnswerBank[current + 1];
             setSelected(next !== undefined ? next : null);
         } else {
-            const final = updatedAnswerBank;
-            let finalSc = 0;
-            questArray.forEach((quest, i) => {
-                const userAnswer = final[i];
-                const index = quest?.correctAnsIndex ?? 0;
-                if (userAnswer === index) {
-                    finalSc += 1;
-                }
-            }); 
-            setFinal(finalSc);
-            showModal(true);
+
+            const unanswered = Object.values(updatedAnswerBank).some(answer => answer === null || answer === undefined);
+
+            if(unanswered) {
+                setWarningModal(true);
+            } else {
+                const final = updatedAnswerBank;
+                let finalSc = 0;
+                questArray.forEach((quest, i) => {
+                    const userAnswer = final[i];
+                    const index = quest?.correctAnsIndex ?? 0;
+                    if (userAnswer === index) {
+                        finalSc += 1;
+                    }
+                }); 
+                setFinal(finalSc);
+                showModal(true);
+            }
         }
     };
 
@@ -200,9 +209,41 @@ function Quiz() {
                     </div>
                 </Form>
             </Card>
+            
+            <Modal show={warningModal} onHide={() => setWarningModal(false)} centered>
+                <Modal.Title className="text-center">Warning</Modal.Title>
+                <Modal.Body className="text-center">
+                    <p>You have answer(s) that have remained unanswered.</p>
+                    <p>Are you sure you want to submit?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={() => setWarningModal(false)}>Back</Button>
+                    <Button onClick={() => {
+                        setWarningModal(false);
+                        const questArray = Array.isArray(quiz.questions) ? quiz.questions : [];
+                        const final = {
+                            ...answerBank,
+                            [current]: selected
+                        };
+
+                        let finalSc = 0;
+                        questArray.forEach((quest, i) => {
+                            const userAnswer = final[i];
+                            const index = quest?.correctAnsIndex ?? 0;
+                            if (userAnswer === index) {
+                                finalSc += 1;
+                            }
+                        }); 
+                        setFinal(finalSc);
+                        showModal(true);
+                    }}>Submit</Button>
+                </Modal.Footer>
+            </Modal>
 
             <Modal show={modal} onHide={() => showModal(false)} centered>
-                <Modal.Title className="text-center">You Completed Your Quiz!</Modal.Title>
+                <Modal.Header>
+                    <Modal.Title className="text-center">You Completed Your Quiz!</Modal.Title>
+                </Modal.Header>
                 <Modal.Body className="text-center">
                     <div>
                         <h3>Your Score: {final} / {quiz && Array.isArray(quiz.questions) ? quiz.questions.length : 0}</h3>

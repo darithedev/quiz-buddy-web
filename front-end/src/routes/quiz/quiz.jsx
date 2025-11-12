@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Navbar, Nav, Container, Card, Form, Modal, ModalFooter } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 import JSConfetti from 'js-confetti';
 import "./quiz.scss";
 
@@ -8,21 +9,25 @@ function Quiz() {
     const [selected, setSelected] = useState(null);
     const [current, setCurrent] = useState(0);
     const [quiz, setQuiz] = useState(null);
+    const [quizzes, setQuizzes] = useState([]);
     const [final, setFinal] = useState(0);
     const [answerBank, setAnswerBank] = useState({});
 
     const [modal, showModal] = useState(false);
     const [warningModal, setWarningModal] = useState(false);
-    
 
+    const location = useLocation();
+    
     useEffect(() => {
-        const url = new URLSearchParams(window.location.search);
+        const url = new URLSearchParams(location.search);
         const quizID = url.get('id');
 
         if (quizID) {
             loadQuiz(quizID);
+        } else {
+            loadQuizzes();
         }
-    }, []);
+    }, [location.search]);
 
     const jsConfetti = new JSConfetti();
     useEffect(() => {
@@ -34,6 +39,43 @@ function Quiz() {
             });
         }
     }, [modal]);
+
+    async function loadQuizzes() {
+        const token = sessionStorage.getItem('authToken');
+
+        if(!token) {
+            return;
+        }
+
+        try {
+            const apiURL = import.meta.env.VITE_API_URL;
+
+            if(!apiURL) {
+                console.error('ERROR!! issue with URL');
+                return;
+            }
+
+            const api = await fetch(`${apiURL}/api/quizzes`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (api.ok) {
+                const data = await api.json();
+                setQuizzes(data.quizzes || []);
+            } else {
+                const errorError = await api.json();
+                console.error('ERROR!! Quizzes not found! Error :', errorError.error);
+                setQuizzes([]);
+            }
+
+        } catch (error) {
+            console.error('ERROR!! Quizzes not found. Error: ', error);
+            setQuizzes([]);
+        }
+    }
 
     async function loadQuiz(quizID) {
         const token = sessionStorage.getItem('authToken');
@@ -142,6 +184,48 @@ function Quiz() {
             }
         }
     };
+    if (!quiz) {
+        return (
+            <div className="quiz-wrapper">
+                <Navbar expand="lg" className="d-flex flex-column m-3" fixed="top">
+                    <Container>
+                        <Navbar.Brand href="home" className="m-4 ms-5 title-link">QuizBuddy</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="hamburger-menu" />
+                        <Navbar.Collapse id="hamburger-menu" className="home-nav-bar">
+                            <Nav className="m-4 ms-5">
+                                <Nav.Link href="/create-quiz" className="color-secondary">Create a Quiz</Nav.Link>
+                                <Nav.Link href="/quiz" className="color-secondary">Take a Quiz</Nav.Link>
+                                <Nav.Link href="/about" className="color-secondary">About</Nav.Link>
+                                <Nav.Link href="/" className="color-secondary">Logout</Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+                <div className="home-content">
+                    {quizzes.length == 0 ? (
+                        <div className="mt-4">
+                            <Button href="/create-quiz" type="submit" className="button-primary">
+                                <strong>+</strong>
+                            </Button>
+                        </div>
+                    ) : (
+                         <div>
+                            <h3 className="mb-5 title-md">Select a Quiz</h3>
+                            {quizzes.map(q => (
+                                <div className="mb-3" key={q.id}>
+                                    <div className="quiz-content">
+                                        <Button href={`/quiz?id=${q.id}`} type="button" className="button-primary-md quiz-title-button">
+                                            <strong>{q.quiz_title}</strong>
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>                            
+        );
+    }
 
     return (
         <div className="quiz-wrapper">

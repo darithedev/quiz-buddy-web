@@ -204,8 +204,8 @@ function Quiz() {
                 <div className="home-content">
                     {quizzes.length == 0 ? (
                         <div className="mt-4">
-                            <Button href="/create-quiz" type="submit" className="button-primary">
-                                <strong>Create</strong>
+                            <Button href="/create-quiz" type="submit" className="button-primary-md">
+                                <strong>Create a Quiz</strong>
                             </Button>
                         </div>
                     ) : (

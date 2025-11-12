@@ -213,8 +213,7 @@ function CreateQuiz() {
                                 rows={8} 
                                 value={questionsOrg} 
                                 onChange={(e) => setQuestionsOrg(e.target.value)}
-                                placeholder={`
-                                    Format Instructions - Please follow this format for your quiz:
+                                placeholder="Format Instructions - Please follow this format for your quiz:
                                     1. This is question one?
                                     (a.) one
                                     b. two
@@ -229,8 +228,7 @@ function CreateQuiz() {
                                     a. one
                                     b. two
                                     (c.) three
-                                    d. four    
-                                `}
+                                    d. four"
                             />
                         </Form.Group>
                         <Form.Group className="button-wrapper text-end">

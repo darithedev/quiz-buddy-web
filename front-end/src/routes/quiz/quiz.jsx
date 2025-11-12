@@ -164,7 +164,12 @@ function Quiz() {
                         </Form.Group>
                         {quiz && thisThis && thisThis.multipleChoice && thisThis.multipleChoice.map((chosen, letter) => (
                             <Form.Group className="mb-3" controlId={`chosen-${letter}`} key={letter}>
-                                <Form.Control className="text-box" value={chosen} onClick={() => setSelected(letter)} readOnly/>
+                                <Form.Control 
+                                    className={`text-box ${selected === letter ? 'selected-choice' : ''}`} 
+                                    value={chosen} 
+                                    onClick={() => setSelected(letter)} 
+                                    readOnly
+                                />
                             </Form.Group>
                         ))}
 

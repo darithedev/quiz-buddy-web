@@ -55,6 +55,10 @@
     background-color: $text-box-field;
     color: $text-box-text;
 }
+.text-box.selected-choice {
+    background-color: rgba($button-secondary, 0.5);
+    color: $text-box-text;
+}
 .button-sm {
     border: none;
     height: 40px;

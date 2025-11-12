@@ -211,9 +211,7 @@ function Quiz() {
             </Card>
             
             <Modal show={warningModal} onHide={() => setWarningModal(false)} centered>
-                <Modal.Header className="text-center">
-                    <Modal.Title className="text-center">Warning</Modal.Title>
-                </Modal.Header>
+                <Modal.Title className="text-center">Warning</Modal.Title>
                 <Modal.Body className="text-center">
                     <p>You have answer(s) that have remained unanswered.</p>
                     <p>Are you sure you want to submit?</p>
@@ -243,9 +241,7 @@ function Quiz() {
             </Modal>
 
             <Modal show={modal} onHide={() => showModal(false)} centered>
-                <Modal.Header className="text-center">
-                    <Modal.Title>You Completed Your Quiz!</Modal.Title>
-                </Modal.Header>
+                <Modal.Title className="text-center">You Completed Your Quiz!</Modal.Title>
                 <Modal.Body className="text-center">
                     <div>
                         <h3>Your Score: {final} / {quiz && Array.isArray(quiz.questions) ? quiz.questions.length : 0}</h3>

@@ -108,17 +108,19 @@ function Quiz() {
         const currentQuest = questArray[current];
         const correctAnsIndex = currentQuest?.correctAnsIndex ?? 0;
 
-        setAnswerBank(prevAnswerBank => ({
-            ...prevAnswerBank,
+        const updatedAnswerBank = {
+            ...answerBank,
             [current]: selected
-        }));
+        };
+
+        setAnswerBank(updatedAnswerBank);
 
         if (current + 1 < questArray.length) {
             setCurrent(current + 1);
-            const next = answerBank[current + 1];
+            const next = updatedAnswerBank[current + 1];
             setSelected(next !== undefined ? next : null);
         } else {
-            const final = { ...answerBank, [current]: selected };
+            const final = updatedAnswerBank;
             let finalSc = 0;
             questArray.forEach((quest, i) => {
                 const userAnswer = final[i];

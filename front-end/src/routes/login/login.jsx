@@ -29,7 +29,7 @@ function Login() {
             });
 
             if (api.ok) {
-                alert('User successfully login!')
+                //alert('User successfully login!')
                 const data = await api.json();
                 if(data.session?.access_token && data?.user?.id) {
                     sessionStorage.setItem('authToken', data.session.access_token);

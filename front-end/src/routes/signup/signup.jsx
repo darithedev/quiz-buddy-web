@@ -29,7 +29,7 @@ function SignUp() {
             });
 
             if (api.ok) {
-                alert('User was created!')
+                //alert('User was created!')
                 window.location.href = '/';
             } else {
                 const data = await api.json();

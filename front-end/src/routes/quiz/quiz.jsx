@@ -152,7 +152,7 @@ function Quiz() {
 
             <Modal show={modal} onHide={() => showModal(false)} centered>
                 <Modal.Title>You Completed Your Quiz!</Modal.Title>
-                <Modal.Body>
+                <Modal.Body className="text-center">
                     <div>
                         <h3>Your Score: {final} / {quiz && Array.isArray(quiz.questions) ? quiz.questions.length : 0}</h3>
                     </div>

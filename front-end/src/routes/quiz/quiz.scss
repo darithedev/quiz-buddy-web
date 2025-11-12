@@ -62,3 +62,15 @@
     background-color: $button-secondary;
     color: $button-text-secondary;
 }
+.modal-content {
+    background-color: $bg-color-secondary;
+}
+
+.modal-title, .modal-body h3 {
+    color: $title-text-secondary;
+}
+
+.modal-footer {
+    background-color: $bg-color-secondary;
+    border-color: rgba(244, 198, 100, 0.3);
+}

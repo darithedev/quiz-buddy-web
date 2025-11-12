@@ -56,7 +56,7 @@
     color: $text-box-text;
 }
 .text-box.selected-choice {
-    background-color: rgba($button-primary, 0.7);
+    background-color: fade-out($bg-color-secondary, 0.3);
     color: $text-box-text;
 }
 .button-sm {

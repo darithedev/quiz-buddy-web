@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Navbar, Nav, Container, Card, Form, Modal, ModalFooter } from "react-bootstrap";
+import JSConfetti from 'js-confetti';
 import "./quiz.scss";
 
 function Quiz() {
@@ -19,6 +20,17 @@ function Quiz() {
             loadQuiz(quizID);
         }
     }, []);
+
+    const jsConfetti = new JSConfetti();
+    useEffect(() => {
+        if (modal) {
+            jsConfetti.addConfetti({
+                emojis: ['🌈', '⚡️', '💥', '✨', '💫', '🌸'],
+                confettiRadius: 6,
+                confettiNumber: 500,
+            });
+        }
+    }, [modal]);
 
     async function loadQuiz(quizID) {
         const token = sessionStorage.getItem('authToken');

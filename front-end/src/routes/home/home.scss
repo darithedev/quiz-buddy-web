@@ -101,3 +101,9 @@
     background-color: $text-box-field;
     color: $button-text-secondary;
 }
+.quiz-title-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

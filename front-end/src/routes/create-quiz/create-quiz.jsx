@@ -208,7 +208,7 @@ function CreateQuiz() {
                                 Questions - Multiple Choice - Add '()' to correct answer. EX: (B.)
                             </Form.Label>
                             <Form.Control 
-                                className="text-box-lg" 
+                                className="text-box-lg text-start" 
                                 as="textarea" 
                                 rows={8} 
                                 value={questionsOrg} 

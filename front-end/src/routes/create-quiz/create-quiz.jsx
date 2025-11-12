@@ -214,21 +214,21 @@ function CreateQuiz() {
                                 value={questionsOrg} 
                                 onChange={(e) => setQuestionsOrg(e.target.value)}
                                 placeholder="Format Instructions - Please follow this format for your quiz:
-                                    1. This is question one?
-                                    (a.) one
-                                    b. two
-                                    c. three
-                                    d. four
-                                    2. This is question two?
-                                    a. one
-                                    (b.) two
-                                    c. three
-                                    d. four
-                                    3. This is question three?
-                                    a. one
-                                    b. two
-                                    (c.) three
-                                    d. four"
+                                1. This is question one?
+                                (a.) one
+                                b. two
+                                c. three
+                                d. four
+                                2. This is question two?
+                                a. one
+                                (b.) two
+                                c. three
+                                d. four
+                                3. This is question three?
+                                a. one
+                                b. two
+                                (c.) three
+                                d. four"
                             />
                         </Form.Group>
                         <Form.Group className="button-wrapper text-end">

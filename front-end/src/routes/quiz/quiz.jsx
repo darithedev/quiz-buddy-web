@@ -169,7 +169,13 @@ function Quiz() {
                                 <Form.Control 
                                     className={`text-box ${selected === letter ? 'selected-choice' : ''}`} 
                                     value={chosen} 
-                                    onClick={() => setSelected(letter)} 
+                                    onClick={() => {
+                                        setSelected(letter);
+                                        setAnswerBank(prevAnswerBank => ({
+                                            ...prevAnswerBank,
+                                            [current]: letter
+                                        }));
+                                    }}
                                     readOnly
                                 />
                             </Form.Group>

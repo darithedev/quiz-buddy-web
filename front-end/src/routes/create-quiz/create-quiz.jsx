@@ -207,7 +207,31 @@ function CreateQuiz() {
                             <Form.Label className="color">
                                 Questions - Multiple Choice - Add '()' to correct answer. EX: (B.)
                             </Form.Label>
-                            <Form.Control className="text-box-lg" as="textarea" rows={8} value={questionsOrg} onChange={(e) => setQuestionsOrg(e.target.value)} />
+                            <Form.Control 
+                                className="text-box-lg" 
+                                as="textarea" 
+                                rows={8} 
+                                value={questionsOrg} 
+                                onChange={(e) => setQuestionsOrg(e.target.value)}
+                                placeholder={`
+                                    Format Instructions - Please follow this format for your quiz:
+                                    1. This is question one?
+                                    (a.) one
+                                    b. two
+                                    c. three
+                                    d. four
+                                    2. This is question two?
+                                    a. one
+                                    (b.) two
+                                    c. three
+                                    d. four
+                                    3. This is question three?
+                                    a. one
+                                    b. two
+                                    (c.) three
+                                    d. four    
+                                `}
+                            />
                         </Form.Group>
                         <Form.Group className="button-wrapper text-end">
                             <Button type="submit" className="mt-2 w-100 button-sm">

@@ -11,6 +11,7 @@ function Quiz() {
     const [score, setScore] = useState(0);
     const [final, setFinal] = useState(0);
     const [modal, showModal] = useState(false);
+    const [answerBank, setAnswerBank] = useState({});
 
     useEffect(() => {
         const url = new URLSearchParams(window.location.search);
@@ -87,6 +88,15 @@ function Quiz() {
         }
     }
 
+    const handlePrevious = () => {
+        if (current > 0) {
+            setCurrent(current - 1);
+
+            const prevAnsw = answerBank[current - 1];
+            setSelected(prevAnsw !== undefined ? prevAnsw : null);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -99,21 +109,29 @@ function Quiz() {
         const correctAnsIndex = currentQuest?.correctAnsIndex ?? 0;
         const correctAns = selected === correctAnsIndex;
 
+        setAnswerBank(prevAnswerBank => ({
+            ...prevAnswerBank,
+            [current]: selected
+        }));
+
         if (current + 1 < questArray.length) {
-            if(correctAns) {
-                setScore(prevScore => prevScore+ 1);
-            }
             setCurrent(current + 1);
-            setSelected(null);
+            const next = answerBank[current + 1];
+            setSelected(next !== undefined ? next : null);
         } else {
-            setScore(prevScore => {
-                const finalSc = correctAns ? prevScore + 1 : prevScore;
-                setFinal(finalSc);
-                return finalSc
-            });
+            const final = { ...answerBank, [current]: selected };
+            let finalSc = 0;
+            questArray.forEach((quest, i) => {
+                const userAnswer = final[i];
+                const index = quest?.correctAnsIndex ?? 0;
+                if (userAnswer === index) {
+                    finalSc += 1;
+                }
+            }); 
+            setFinal(finalSc);
             showModal(true);
         }
-    }
+    };
 
     return (
         <div className="quiz-wrapper">
@@ -153,9 +171,18 @@ function Quiz() {
 
                         <Form.Group className="button-wrapper text-end">
                             {quiz && Array.isArray(quiz.questions) && (
-                                <Button type="submit" className="mt-2 w-100 button-sm" disabled={selected === null}>
-                                    <strong>{current + 1 < quiz.questions.length ? "Next" : "Finish"}</strong>
-                                </Button>
+                                <div className="d-flex justify-content-between">
+                                    {current > 0 ? (
+                                        <Button type="button" onClick={handlePrevious} className="mt-2 w-100 button-sm">
+                                            <strong>Previous</strong>
+                                        </Button>
+                                    ) : (
+                                        <div></div>
+                                    )}
+                                    <Button type="submit" className="mt-2 w-100 button-sm" disabled={selected === null}>
+                                        <strong>{current + 1 < quiz.questions.length ? "Next" : "Finish"}</strong>
+                                    </Button>
+                                </div>
                             )}
                         </Form.Group>
                     </div>
@@ -175,6 +202,6 @@ function Quiz() {
             </Modal>
         </div>
     );
-}
+} 
 
 export default Quiz;

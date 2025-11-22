@@ -68,4 +68,12 @@
 }
 .mt-8 {
     margin-top: 8rem;
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
+        margin: top 16rem;
+    }
+
+    @media (min-width: map-get($grid-breakpoints, lg)) {
+        margin: top 16rem;
+    }
 }

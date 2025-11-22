@@ -98,17 +98,17 @@ function Home() {
                         </Button>
                     </div>
                 ) : (
-                    <div>
+                    <div style={{width: '100%' }}>
                         <h3 className="mb-5 title-md">Your Quizzes</h3>
-                        {quizzes.map(q => (
-                            <div className="mb-3" key={q.id}>
-                                <div className="quiz-content">
+                        <div className="quizzes-layout">
+                            {quizzes.map(q => (
+                                <div className="mb-3 quiz-content" key={q.id}>
                                     <Button href={`/quiz?id=${q.id}`} type="button" className="button-primary-md quiz-title-button">
                                         <strong>{q.quiz_title}</strong>
                                     </Button>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>
